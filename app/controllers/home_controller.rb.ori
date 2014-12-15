@@ -1,0 +1,21 @@
+require 'open-uri'
+class HomeController < ApplicationController
+
+  def index
+    stocktwitsurl = "http://stocktwits.com/"          #define url
+    nasdaqurl = "http://www.nasdaq.com/symbol/"       #define url
+
+    stocktwits = Nokogiri::HTML(open(stocktwitsurl))  #scraping Stockwit Trending stocks headline
+    @trendlist = stocktwits.css(".with-ticker-card").text.split("$")
+
+    @stockquote=[]                                    #scraping NASDAQ for each stock quote
+    @trendlist.each do |eqo|
+         nasdaqquote = Nokogiri::HTML(open(nasdaqurl+"#{eqo}"))       #data return as $1.23*
+                str  = nasdaqquote.css(".qwidget-dollar").text.to_s   #turn data to string
+                str[0]=""                                             #remove dollar sign
+        @stockquote << str.to_f                             #turn to float to push into array
+    end
+
+  end 
+
+end

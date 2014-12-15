@@ -1,0 +1,34 @@
+<!-- Render partial _d3magic.html.erb -->
+<div class="d3body">
+	<p>Trending
+		<%= render partial: 'home/d3magic'%> 
+	</p>
+</div>
+<!-- Loop through the stock symbol list -->
+<div class="symlist">
+<table>
+  <td>
+	<ul>
+		<p>Symbol</p>
+		<hr>
+		<% @trendlist[1..10].each do |etl| %>
+			<li>
+				<%= link_to etl, "http://www.nasdaq.com/symbol/"+etl, :class => "stocklink" %>
+			</li>
+		<%end%>
+	</ul>
+  </td>
+  <!-- Loop through the stock price list -->
+  <td>
+	<ul>
+		<p>Price</p>
+		<hr>
+		<% @stockquote.each do |sqt| %>
+			<li>
+				<%= "$"+ "#{sqt}" %>
+			</li>
+		<% end %>
+	</ul>
+  </td>
+</table>
+</div>

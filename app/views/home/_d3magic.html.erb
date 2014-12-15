@@ -1,0 +1,86 @@
+<!-- D3 Script. Behold the D3 Magic! -->
+<script type="text/javascript">
+
+	//Width, height, and padding
+	var w = 600;
+	var h = 600;
+	var padding = 30;
+
+	// List of Stock Quotes
+	var dataset = <%= @stockquote.to_json.html_safe %>;
+		console.log(dataset);
+	// List of Stock Symbols
+	var nameset = <%= @trendlist[1..10].to_json.html_safe %>;
+		console.log(nameset);
+
+	// i and j for radius calculations
+	var i=0; 
+	var j=0;
+
+	//Create SVG element in partial render in index.html.erb
+	var svg = d3.select(".d3body") 
+				.append("svg")
+				.attr("width", w)
+				.attr("height", h);
+
+	// On the drawing surface svg, let's make a bunch of circles
+	svg.selectAll("circle")
+		// And let's use this dataset
+	   .data(dataset)
+	   .enter()
+	   .append("circle")
+	   .attr("cx", function(d) {
+			   		return w/2; 					// Fixed x axis
+			   })
+		.attr("cy", function(d) {
+			   		return w/2;						// Fixed y axis
+			   })
+		.attr("r", function(d) {					// Shrinking radius
+				var radi = (w/2)-(i*30);			// based on popularity.
+				i++;								// Biggest circle = most popular.
+				console.log("radius "+radi);
+			   		return radi;
+			   })
+		.transition()
+	   	.duration(600)								// Circle duration
+	   	.delay(function(d, i){ return i * 400; })	// Circle delay
+		.attr("fill", function getRandomColor() {	// Random circle color
+						    var letters = '0123456789ABCDEF'.split('');
+						    var color = '#';
+						    for (var i = 0; i < 6; i++ ) {
+						        color += letters[Math.floor(Math.random() * 16)];
+						    	}
+						    return color;
+				})
+		; //End last attr chaining
+		
+	//Show stock list
+	svg.selectAll("text")
+		.data(nameset)
+		.enter()
+		.append("text")
+		.text(function(d) {
+			return d;
+		})
+		.attr("x", function(d) {					// Fixed x axis
+			return w/2-11;
+		})
+		.attr("y", function() {						// Y axis depends on radius
+			var loc = (j*30);
+				j++;
+				console.log ("y "+loc);
+			return 25+loc;
+		})
+		.attr("font-family", "sans-serif")
+		.attr("font-size", "11px")
+		.attr("fill", function getRandomColor() {	// Random text color 
+						    var letters = '0123456789ABCDEF'.split('');
+						    var color = '#';
+						    for (var i = 0; i < 6; i++ ) {
+						        color += letters[Math.floor(Math.random() * 16)];
+						    	}
+						    return color;
+						}
+			);//End last attr chaining
+ 
+</script>

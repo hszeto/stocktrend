@@ -1,0 +1,15 @@
+<!-- Render stock symbols & stock prices -->
+
+<!-- HTML & ERB to loop through the stock symbol list & stock prices -->
+<table>
+	<td>
+		<% @trendlist.each do |etl| %>
+			<%= "$"+etl %><br>
+		<%end%>
+	</td>
+	<td>
+		<% @stockquote.each do |esq| %>
+			<%= esq %><br>
+		<% end %>
+	</td>
+</table> 

@@ -12,9 +12,12 @@ Heroku deployment:
 	/config/environments/production.rb :
 		config.serve_static_assets = true
 		config.assets.compile = true
+
+	Replace:
+		# config.assets.precompile += %w( search.js )
+	With
+		config.assets.precompile += %w[*.png *.jpg *.jpeg *.gif]
 		
-	/config/initializers/assest.rb , replace line8 with:
-		Rails.application.config.assets.precompile += %w[*.png *.jpg *.jpeg *.gif]
 
 	In terminal, run:
 		RAILS_ENV=production bundle exec rake assets:precompile
